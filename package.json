@@ -1,0 +1,18 @@
+{
+  "name": "atomlab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AtomLab - 用自然语言驱动、实时生成可运行网页应用的 Agent Demo（零依赖）",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node test/smoke.mjs",
+    "shots": "node test/shot.mjs",
+    "ui-shot": "node test/ui-shot.mjs",
+    "test:persist": "node test/persist.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

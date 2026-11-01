@@ -1,0 +1,8 @@
+node_modules/
+.shots/src/
+.shots/.chrome-profile/
+.preview/
+_stream.txt
+.shots/.profile*/
+.shots/.p*/
+_tunnel/

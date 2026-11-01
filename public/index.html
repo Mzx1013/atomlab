@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AtomLab · AI App Studio</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%238b7bff'/><path d='M16 7l7 18h-4l-1.4-4h-5.2L11 25H7z' fill='white'/></svg>" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7.5 18h-4.2l-1.5-3.9H10.2L8.7 21H4.5L12 3z" fill="currentColor"/></svg>
+        </div>
+        <div class="brand-text">
+          <strong>AtomLab</strong>
+          <span>AI App Studio</span>
+        </div>
+      </div>
+
+      <div class="topbar-mid">
+        <div class="provider" id="provider" title="当前生成引擎">
+          <span class="pulse"></span>
+          <span id="providerText">连接中…</span>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="ghost-btn" id="btnNew" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          新建
+        </button>
+        <button class="ghost-btn" id="btnExport" type="button" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+          导出
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- ================= 左：对话 ================= -->
+      <section class="chat">
+        <div class="thread" id="thread">
+          <div class="welcome" id="welcome">
+            <div class="welcome-glow"></div>
+            <span class="welcome-badge">Agent 驱动 · 实时预览</span>
+            <h1>说一句话，<br />得到一个能跑的应用。</h1>
+            <p>描述你要什么，Agent 会拆解需求、写代码、自检，然后渲染出可交互的页面。生成完还能继续对话改。</p>
+            <div class="chips" id="chips">
+              <button class="sug" data-prompt="做一个任务清单应用，可以添加、勾选完成、按状态筛选">
+                <span>🗂️</span> 任务清单
+              </button>
+              <button class="sug" data-prompt="做一个数据看板，包含 KPI 卡片、访问趋势折线图和渠道分布柱状图，能切换 7/30/90 天">
+                <span>📊</span> 数据看板
+              </button>
+              <button class="sug" data-prompt="做一个番茄钟计时器，25 分钟专注，环形进度，结束有提示音">
+                <span>🍅</span> 番茄钟
+              </button>
+              <button class="sug" data-prompt="做一个预约表单，包含姓名、邮箱、日期、人数，要有校验和提交成功页">
+                <span>📝</span> 预约表单
+              </button>
+              <button class="sug" data-prompt="做一个 SaaS 产品落地页，包含 Hero、三个特性、三档定价">
+                <span>🚀</span> 产品落地页
+              </button>
+              <button class="sug" data-prompt="做一个计算器，支持加减乘除和括号，能用键盘输入">
+                <span>🧮</span> 计算器
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="composer-wrap">
+          <form class="composer" id="composer">
+            <textarea id="prompt" rows="1" placeholder="描述你的应用，或说「改成紫色」来迭代…" autocomplete="off"></textarea>
+            <button class="send" id="send" type="submit" aria-label="发送">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </button>
+          </form>
+          <p class="composer-hint">Enter 发送 · Shift + Enter 换行</p>
+        </div>
+      </section>
+
+      <!-- ================= 右：舞台 ================= -->
+      <section class="stage">
+        <div class="stage-bar">
+          <div class="tabs" id="tabs">
+            <button class="tab is-active" data-pane="preview" type="button">预览</button>
+            <button class="tab" data-pane="code" type="button">代码</button>
+            <button class="tab" data-pane="history" type="button">版本 <em id="versionCount">0</em></button>
+          </div>
+
+          <div class="stage-tools">
+            <div class="devices" id="devices">
+              <button class="is-active" data-width="100%" type="button" title="桌面">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              </button>
+              <button data-width="820px" type="button" title="平板">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M11 18h2"/></svg>
+              </button>
+              <button data-width="390px" type="button" title="手机">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg>
+              </button>
+            </div>
+            <button class="icon-btn" id="btnReload" type="button" title="重新渲染">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-3-6.7M21 4v5h-5"/></svg>
+            </button>
+            <button class="icon-btn" id="btnOpen" type="button" title="在新标签打开">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8 8M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="panes">
+          <div class="pane is-active" data-pane="preview">
+            <div class="frame-wrap" id="frameWrap">
+              <iframe id="preview" title="应用预览" sandbox="allow-scripts allow-forms allow-modals allow-popups"></iframe>
+              <div class="empty-stage" id="emptyStage">
+                <div class="empty-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="15" rx="2.5"/><path d="M2.5 9h19M6 6.5h.01M8.5 6.5h.01"/></svg>
+                </div>
+                <p>生成的应用会实时渲染在这里</p>
+                <span>运行在 sandbox iframe 中，与宿主隔离</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pane" data-pane="code">
+            <div class="file-bar">
+              <div class="file-tabs" id="fileTabs"></div>
+              <button class="ghost-btn tiny" id="btnCopy" type="button">复制</button>
+            </div>
+            <pre class="code"><code id="code"></code></pre>
+          </div>
+
+          <div class="pane" data-pane="history">
+            <ul class="history" id="history">
+              <li class="history-empty">还没有版本。生成第一次后会记录在这里。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="statusbar">
+          <span class="sb-item" id="statusText">就绪</span>
+          <span class="spacer"></span>
+          <span class="sb-item" id="statChars">0 字符</span>
+          <span class="sb-item" id="statTime">—</span>
+          <span class="sb-item sandbox-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l8 4v5c0 4.4-3.4 8.3-8 9-4.6-.7-8-4.6-8-9V7z"/></svg>
+            sandbox
+          </span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
