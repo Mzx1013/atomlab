@@ -9,7 +9,7 @@
 输入「做一个数据看板，能切换 7/30/90 天」，Agent 会：拆解需求 → 逐文件写出 `index.html / style.css / app.js` → 对产物做 5 项自检 → 在沙箱 iframe 里实时渲染出可交互页面。生成完继续说话就能改（「换成紫色」「改成深色主题」），并保留版本可回滚。
 
 - **在线体验**：[https://easy-speeds-memphis-knit.trycloudflare.com](https://easy-speeds-memphis-knit.trycloudflare.com) （点开即用；若打不开说明本地服务已停止，见下方「运行方式」）
-- **源码**：见附件 `AtomLab-submission.zip`（零依赖，解压后 `node server.js` 即可）
+- **源码**：[https://github.com/Mzx1013/atomlab](https://github.com/Mzx1013/atomlab) （另附 `AtomLab-submission.zip`，零依赖，解压后 `node server.js` 即可）
 - **演示视频（60s）**：（你填，强烈建议补：从提问到生成到改一版的全过程）
 - **运行方式**：`node server.js` → `http://localhost:4173`。零依赖、无需构建、离线可跑。
 
